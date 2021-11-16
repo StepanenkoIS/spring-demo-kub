@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-demo-kub
+  labels:
+    app: spring-demo-kub
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-demo-kub
+  template:
+    metadata:
+      labels:
+        app: spring-demo-kub
+    spec:
+      containers:
+        - name: spring-demo-kub
+          image: localhost:32000/spring-demo-kub:latest
+          ports:
+            - containerPort: 8080
+
