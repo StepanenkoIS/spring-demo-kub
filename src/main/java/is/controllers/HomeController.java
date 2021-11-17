@@ -3,8 +3,8 @@ package is.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import is.models.Product;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +19,7 @@ import java.net.URLConnection;
 @RestController
 class HomeController {
 
-    Logger logger = LoggerFactory.getLogger(HomeController.class);
+    private static final Logger LOGGER = LogManager.getLogger(HomeController.class);
 
     @Value("${url}")
     private String url;
@@ -27,14 +27,14 @@ class HomeController {
     @GetMapping("/test")
     public Product getMsgTesting() {
         Product product = new Product("getMsg", "lamp", "IEK", "E27, 11 watt", "200,00");
-        logger.info("In method getMsg(). Output: " + product);
+        LOGGER.info("In method getMsg(). Output: " + product);
         return product;
     }
 
     @GetMapping("/")
     public String getStringFromService() throws IOException {
         String urlGetSting = url + "getString";
-        logger.info("In method getStringFromService(). urlService: " + urlGetSting);
+        LOGGER.info("In method getStringFromService(). urlService: " + urlGetSting);
         StringBuilder urlBody = new StringBuilder();
         try {
             URL urlService = new URL(urlGetSting);
@@ -52,14 +52,14 @@ class HomeController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        logger.info("In method getStringFromService(). Output: " + urlBody);
+        LOGGER.info("In method getStringFromService(). Output: " + urlBody);
         return urlBody.toString();
     }
 
     @GetMapping("/product")
     public Product getProductFromService() {
         String urlGetProduct = url + "getProduct";
-        logger.info("In method getProductFromService(). urlService: " + urlGetProduct);
+        LOGGER.info("In method getProductFromService(). urlService: " + urlGetProduct);
         Product product = null;
         try {
             URL urlService = new URL(urlGetProduct);
@@ -67,7 +67,7 @@ class HomeController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        logger.info("In method getProductFromService(). Successful: " + product);
+        LOGGER.info("In method getProductFromService(). Successful: " + product);
         return product;
     }
 }

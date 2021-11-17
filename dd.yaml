@@ -1,3 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-demo1
+spec:
+  selector:
+    app: spring-demo-kub
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap-demo
+data:
+  application.properties:
+    url=http://service-demo-provide/
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -19,4 +39,10 @@ spec:
           image: localhost:32000/spring-demo-kub:latest
           ports:
             - containerPort: 8080
-
+          volumeMounts:
+            - name: configmap-demo
+              mountPath: /workspace/config
+      volumes:
+        - name: configmap-demo
+          configMap:
+            name: configmap-demo
