@@ -46,3 +46,21 @@ spec:
         - name: configmap-demo
           configMap:
             name: configmap-demo
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minimal-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /service-demo1(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: service-demo1
+                port:
+                  number: 80
